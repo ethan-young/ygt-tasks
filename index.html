@@ -13,6 +13,7 @@
     <script src="jspsych-6.3.1/plugins/jspsych-instructions.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-animation.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-survey-likert.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-survey-text.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-survey-html-form.js"></script>
@@ -38,9 +39,17 @@
     
     <!-- Working Memory Capacity -->
     <script src="wm-capacity/abs0-setup.js"></script>
-
+    <script src="wm-capacity/abs2-task.js"></script>
+    
     <!-- Run the entire session -->
     <script>
+      
+      var which_task = {
+        type: 'html-button-response',
+        stimulus: "<p>Which task would you like to try?</p>",
+        choices: ['Abstract Updating', 'Ecological Updating', "Abstract Capacity"],
+        prompt: "",
+      };
       
       // Abstract Updating
       var abs_updating = {
@@ -51,7 +60,17 @@
         abs_updating_practice_finish,
         abs_updating_task,
         abs_updating_end
-      ]};
+      ],
+      conditional_function: function(){
+          var selected_task = jsPsych.data.getLastTrialData().values()[0].response;
+          console.log(selected_task);
+          if(selected_task == 0){
+            return true;
+          } else {
+            return false;
+          }
+        }
+      };
       
       // Ecological Updating
       var eco_updating = {
@@ -62,13 +81,38 @@
         eco_updating_practice_finish,
         eco_updating_task,
         eco_updating_end
-      ]};
+      ],
+      conditional_function: function(){
+          var selected_task = jsPsych.data.getLastTrialData().values()[0].response;
+          console.log(selected_task);
+          if(selected_task == 1){
+            return true;
+          } else {
+            return false;
+          }
+        }
+      };
       
+      var abs_capacity = {
+        timeline: [
+          abs_capacity_task
+      ],
+        conditional_function: function(){
+          var selected_task = jsPsych.data.getLastTrialData().values()[0].response;
+          console.log(selected_task);
+          if(selected_task == 2){
+            return true;
+          } else {
+            return false;
+          }
+        }
+      };
       
       timeline.push(
-        //abs_updating,
-        //eco_updating,
-        autofocus_trial
+        which_task,
+        abs_updating,
+        eco_updating,
+        abs_capacity
       );
       
       jsPsych.init({
@@ -83,7 +127,7 @@
           "img/updating-eco/angry.png"
         ],
         on_finish: function() {
-          jsPsych.data.get().localSave('your-updating-data.csv');
+          jsPsych.data.displayData('json')
         }
       });
     </script>
