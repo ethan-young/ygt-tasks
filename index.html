@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+  <head>
+    <title>YGT Tasks</title>
+    
+    <!-- Load jspsych -->
+    <script src="jspsych-6.3.1/jspsych.js"></script>
+    
+    <!-- jspsych stylesheet -->
+    <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css"/>
+    
+    <!-- Load the jspsych plugins that are used in the experiment -->
+    <script src="jspsych-6.3.1/plugins/jspsych-instructions.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-animation.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-survey-likert.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-survey-text.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-survey-html-form.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-categorize-html.js"></script>
+    
+    <!-- Load plugins I customized -->
+    <script src="custom-plugins/jspsych-fullscreen-esy.js"></script>
+    
+    <script>
+      // Set up session
+      var timeline = [];
+    </script>
+    
+    <!-- Working Memory Updating -->
+    <script src="wm-updating/abs0-setup.js"></script>
+    <script src="wm-updating/abs1-practice.js"></script>
+    <script src="wm-updating/abs2-task.js"></script>
+    <script src="wm-updating/abs3-end.js"></script>
+    <script src="wm-updating/eco0-setup.js"></script>
+    <script src="wm-updating/eco1-practice.js"></script>
+    <script src="wm-updating/eco2-task.js"></script>
+    <script src="wm-updating/eco3-end.js"></script>
+    
+    <!-- Working Memory Capacity -->
+    <script src="wm-capacity/abs0-setup.js"></script>
+
+    <!-- Run the entire session -->
+    <script>
+      
+      // Abstract Updating
+      var abs_updating = {
+        timeline: [
+        abs_updating_welcome,
+        abs_updating_instructions,
+        abs_updating_practice_loop,
+        abs_updating_practice_finish,
+        abs_updating_task,
+        abs_updating_end
+      ]};
+      
+      // Ecological Updating
+      var eco_updating = {
+        timeline: [
+        eco_updating_welcome,
+        eco_updating_instructions,
+        eco_updating_practice_loop,
+        eco_updating_practice_finish,
+        eco_updating_task,
+        eco_updating_end
+      ]};
+      
+      
+      timeline.push(
+        //abs_updating,
+        //eco_updating,
+        autofocus_trial
+      );
+      
+      jsPsych.init({
+        timeline: timeline,
+        //show_progress_bar: true,
+        preload_images: [
+          'img/updating-abs/circle.png',
+          'img/updating-abs/triangle.png',
+          'img/updating-abs/square.png',
+          "img/updating-eco/fivedollarbill.jpg",
+          "img/updating-eco/uta_bus.png",
+          "img/updating-eco/angry.png"
+        ],
+        on_finish: function() {
+          jsPsych.data.get().localSave('your-updating-data.csv');
+        }
+      });
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
